@@ -3,6 +3,7 @@ import os
 import shutil
 from PIL import Image
 from sklearn.model_selection import train_test_split
+import numpy as np
 
 def rearrange_dataset(annotations_file_loc = str, new_imageset_path=str, old_imageset_path=str):
     os.mkdir(new_imageset_path)
@@ -32,9 +33,9 @@ def rearrange_dataset(annotations_file_loc = str, new_imageset_path=str, old_ima
                 cropped_image = image.crop((int(bundle[3]), int(bundle[4]), int(bundle[5]), int(bundle[6])))
                 cropped_image.save(os.path.join(new_imageset_path, str(bundle[0])))
                 # shutil.copy(os.path.join(old_imageset_path, str(bundle[0])), new_imageset_path)
-                temperory_list = [(file_name, width, height, category) for file_name, width, height, _, _, _, _, category in temperory_list]
+            temperory_list = [(file_name, width, height, category) for file_name, width, height, _, _, _, _, category in temperory_list]
             qualified_file_name_wrt_category += temperory_list
-            print("catgory: {i} with ""{count_per_category}"" numbers of data")
+            print(f"catgory: {i} with {count_per_category} numbers of data")
     return qualified_file_name_wrt_category
 
 def split_train_test(list_with_tuple_bundle = list):

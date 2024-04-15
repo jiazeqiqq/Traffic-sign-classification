@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 import shutil
+from PIL import Image
+from sklearn.model_selection import train_test_split
 
 def rearrange_dataset(annotations_file_loc = str, new_imageset_path=str, old_imageset_path=str):
     os.mkdir(new_imageset_path)
@@ -25,10 +27,21 @@ def rearrange_dataset(annotations_file_loc = str, new_imageset_path=str, old_ima
             else:
                 pass
         if count_per_category > 190 and count_per_category < 600:
-            [shutil.copy(os.path.join(old_imageset_path, str(bundle[0])), new_imageset_path) for bundle in temperory_list]
+            for bundle in temperory_list:
+                image = Image.open(os.path.join(old_imageset_path, str(bundle[0])))
+                cropped_image = image.crop((int(bundle[3]), int(bundle[4]), int(bundle[5]), int(bundle[6])))
+                cropped_image.save(os.path.join(new_imageset_path, str(bundle[0])))
+                # shutil.copy(os.path.join(old_imageset_path, str(bundle[0])), new_imageset_path)
+                temperory_list = [(file_name, width, height, category) for file_name, width, height, _, _, _, _, category in temperory_list]
             qualified_file_name_wrt_category += temperory_list
             print("catgory: {i} with ""{count_per_category}"" numbers of data")
     return qualified_file_name_wrt_category
+
+def split_train_test(list_with_tuple_bundle = list):
+    y = np.array([list(item)[-1] for item in list_with_tuple_bundle])
+    X = np.array([list(item)[0:-1] for item in list_with_tuple_bundle])
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    return X_train, X_test, y_train, y_test
 
 
     

@@ -1,7 +1,6 @@
 from data_rearrangement import rearrange_dataset, split_train_test
 import argparse
 import numpy as np
-# from Feature_extraction import extract_hog_features
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

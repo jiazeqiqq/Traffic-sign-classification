@@ -20,7 +20,7 @@ def extract_hog_features(image_path):
                               block_norm=block_norm,
                               visualize=True)
 
-    return features, hog_image
+    return features, hog_image, gray_image
 
 
 

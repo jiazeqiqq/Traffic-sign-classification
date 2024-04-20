@@ -1,38 +1,48 @@
-from skimage import io, color
-from skimage.feature import hog
+import extract_hog as eh
+import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.optimizers import Adam
 
-def extract_hog_features(image_path):
-    # Load an image
-    image = io.imread(image_path)
-    gray_image = color.rgb2gray(image)  # Convert to grayscale
+# Load training images from train.csv
+train = pd.read_csv('./dataset/train.csv')
+image_names = train['image_name'].tolist()
 
-    # Parameters for HOG
-    orientations = 9
-    pixels_per_cell = (8, 8)
-    cells_per_block = (2, 2)
-    block_norm = 'L2-Hys'
+path_prefix = './dataset/train_images/'
+path_prefix = "./dataset/new_imageset/"
+full_paths = [path_prefix + name for name in image_names]
 
-    # Extract HOG features and HOG image
-    features, hog_image = hog(gray_image, orientations=orientations,
-                              pixels_per_cell=pixels_per_cell,
-                              cells_per_block=cells_per_block,
-                              block_norm=block_norm,
-                              visualize=True)
+# Extract HOG features for each image
+features_list = []
+for path in full_paths:
+    features, _, _ = eh.extract_hog_features(path)
+    features_list.append(features)
 
-    return features, hog_image, gray_image
+# Convert the list to a 2D array
+X_train = np.array(features_list)
+print("X_train:", X_train.shape)
 
+# Autoencoder
+feature_size = 8100  # Size of the HOG feature vector
+latent_dim = 128  # Size of the latent space
 
+# Input layer
+input_layer = Input(shape=(feature_size,))
 
+# Encoder
+encoded = Dense(256, activation='relu')(input_layer)
+encoded = Dense(128, activation='relu')(encoded)
+encoded = Dense(latent_dim, activation='relu')(encoded)
 
-# Visualization
-# fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharex=True, sharey=True)
+# Decoder
+decoded = Dense(128, activation='relu')(encoded)
+decoded = Dense(256, activation='relu')(decoded)
+decoded = Dense(feature_size, activation='sigmoid')(decoded)
 
-# ax1.axis('off')
-# ax1.imshow(gray_image, cmap=plt.cm.gray)
-# ax1.set_title('Input Image')
+# Autoencoder Model
+autoencoder = Model(input_layer, decoded)
+autoencoder.compile(optimizer=Adam(), loss='mean_squared_error')
 
-# ax2.axis('off')
-# ax2.imshow(hog_image, cmap=plt.cm.gray)
-# ax2.set_title('Histogram of Oriented Gradients')
-# plt.show()

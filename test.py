@@ -1,7 +1,7 @@
-import Feature_extraction as fe
+import extract_hog as eh
 import matplotlib.pyplot as plt
-path = './dataset/new_imageset/003_1_0001_1_j.png'
-features, hog_image, gray_image = fe.extract_hog_features(path)
+path = './dataset/new_imageset/055_1_0022.png'
+features, hog_image, gray_image = eh.extract_hog_features(path)
 print("features:", features.shape)
 
 #Visualization
@@ -13,3 +13,4 @@ ax2.axis('off')
 ax2.imshow(hog_image, cmap=plt.cm.gray)
 ax2.set_title('Histogram of Oriented Gradients')
 plt.show()
+

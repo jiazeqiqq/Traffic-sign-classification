@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.cluster import KMeans
 
 # Load training images from train.csv
 train = pd.read_csv('./dataset/train.csv')
@@ -29,3 +30,29 @@ print("X_label:", X_label.shape)
 lda = LDA(n_components=3)
 X_r = lda.fit_transform(X_train, X_label)
 print("X_r:", X_r.shape)
+
+#perform K-mean
+orginal_label = np.unique(X_label)
+k = len(orginal_label)
+y_pred = KMeans(n_clusters=k, random_state=42).fit_predict(X_r)
+
+#visulization part
+colors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple', 'brown', 'pink', 'gold', 'gray', 'cyan', 'coral']
+fig = plt.figure(figsize=(8, 4))
+ax1 = fig.add_subplot(121, projection='3d')
+ax2 = fig.add_subplot(122, projection='3d')
+for i in range(k):
+    ax1.scatter(X_r[(y_pred == i), 0], X_r[(y_pred == i), 1], X_r[(y_pred == i), 2], marker='o',c=colors[i], label=f'Cluster {i}')
+    ax2.scatter(X_r[(X_label == orginal_label[i]), 0], X_r[(X_label == orginal_label[i]), 1], X_r[(X_label == orginal_label[i]), 2], marker='o', c=colors[i], label=f'Cluster {i}')
+ax1.set_xlabel('X[0]-axis')
+ax1.set_ylabel('X[1]-axis')
+ax1.set_zlabel('X[2]-axis')
+ax1.set_title('3D Scatter Plot of data with Colored predicted Labels')
+ax1.legend()
+ax2.set_xlabel('X[0]-axis')
+ax2.set_ylabel('X[1]-axis')
+ax2.set_zlabel('X[2]-axis')
+ax2.set_title('3D Scatter Plot of data with Colored  Colored true Labels')
+ax2.legend()
+plt.tight_layout()
+plt.show()

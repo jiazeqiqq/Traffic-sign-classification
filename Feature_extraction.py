@@ -2,10 +2,7 @@ import extract_hog as eh
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import tensorflow as tf
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Dense
-from tensorflow.keras.optimizers import Adam
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 
 # Load training images from train.csv
 train = pd.read_csv('./dataset/train.csv')
@@ -24,25 +21,11 @@ for path in full_paths:
 # Convert the list to a 2D array
 X_train = np.array(features_list)
 print("X_train:", X_train.shape)
+X_label = train['category'].to_list()
+X_label = np.array(X_label)
+print("X_label:", X_label.shape)
 
-# Autoencoder
-feature_size = 8100  # Size of the HOG feature vector
-latent_dim = 128  # Size of the latent space
-
-# Input layer
-input_layer = Input(shape=(feature_size,))
-
-# Encoder
-encoded = Dense(256, activation='relu')(input_layer)
-encoded = Dense(128, activation='relu')(encoded)
-encoded = Dense(latent_dim, activation='relu')(encoded)
-
-# Decoder
-decoded = Dense(128, activation='relu')(encoded)
-decoded = Dense(256, activation='relu')(decoded)
-decoded = Dense(feature_size, activation='sigmoid')(decoded)
-
-# Autoencoder Model
-autoencoder = Model(input_layer, decoded)
-autoencoder.compile(optimizer=Adam(), loss='mean_squared_error')
-
+# Perform LDA
+lda = LDA(n_components=3)
+X_r = lda.fit_transform(X_train, X_label)
+print("X_r:", X_r.shape)

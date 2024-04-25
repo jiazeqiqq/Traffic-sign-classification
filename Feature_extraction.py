@@ -50,6 +50,12 @@ X_test_r = lda.transform(X_test)
 print("X_train_r:", X_train_r.shape)
 print("X_test_r:", X_test_r.shape)
 
+# save x_train/x_test, y_train/y_test
+np.save('./dataset/X_train.npy', X_train_r)
+np.save('./dataset/y_train.npy', y_train)
+np.save('./dataset/X_test.npy', X_test_r)
+np.save('./dataset/y_test.npy', y_test)
+
 #perform K-mean
 orginal_label = np.unique(y_train)
 k = len(orginal_label)
@@ -75,18 +81,3 @@ ax2.set_title('3D Scatter Plot of data with Colored  Colored true Labels')
 ax2.legend()
 plt.tight_layout()
 plt.show()
-
-# logistic regression
-logreg = LogisticRegression()
-logreg.fit(X_train, y_train)
-y_pred = logreg.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print("LR Accuracy:", accuracy)
-
-# ensemble method(adaboost)
-base_estimator = RandomForestClassifier(random_state=42)
-adaboost = AdaBoostClassifier(base_estimator=base_estimator, n_estimators=200)
-adaboost.fit(X_train, y_train)
-y_pred = adaboost.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print("Adaboost Accuracy:", accuracy)

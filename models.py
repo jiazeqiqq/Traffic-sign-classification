@@ -3,7 +3,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score
 import numpy as np
 
-# x_train/x_test, y_train/y_test
+# load x_train/x_test, y_train/y_test
 X_train = np.load('./dataset/X_train.npy')
 y_train = np.load('./dataset/y_train.npy')
 X_test = np.load('./dataset/X_train.npy')

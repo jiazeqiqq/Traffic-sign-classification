@@ -1,0 +1,36 @@
+catgory: 3 with 344 numbers of data
+catgory: 5 with 244 numbers of data
+catgory: 7 with 202 numbers of data
+catgory: 11 with 268 numbers of data
+catgory: 16 with 218 numbers of data
+catgory: 17 with 214 numbers of data
+catgory: 26 with 260 numbers of data
+catgory: 28 with 514 numbers of data
+catgory: 35 with 202 numbers of data
+catgory: 43 with 198 numbers of data
+catgory: 54 with 500 numbers of data
+catgory: 55 with 220 numbers of data
+test: [['005_0059.png' '76' '69' '5']
+ ['003_1_0007_1_j.png' '165' '166' '3']
+ ['005_1_0017.png' '130' '115' '5']
+ ...
+ ['028_1_0167.png' '244' '198' '28']
+ ['026_0011_j.png' '112' '107' '26']
+ ['054_0070_j.png' '92' '85' '54']]
+test_shape: (677, 4)
+train: [['035_1_0004_1_j.png' '112' '115' '35']
+ ['017_1_0030.png' '93' '90' '17']
+ ['043_1_0027_1_j.png' '111' '102' '43']
+ ...
+ ['017_0019.png' '189' '179' '17']
+ ['011_1_0002.png' '117' '120' '11']
+ ['055_0011.png' '181' '164' '55']]
+train_shape: (2707, 4)
+orginal_list: [['003_0001.png' '85' '76' '3']
+ ['003_0002.png' '98' '92' '3']
+ ['003_0003.png' '122' '112' '3']
+ ...
+ ['055_1_0027_1_j.png' '104' '99' '55']
+ ['055_1_0028_1_j.png' '141' '134' '55']
+ ['055_1_0029_1_j.png' '156' '153' '55']]
+orginal_list_shape: (3384, 4)

@@ -27,11 +27,14 @@ class TrafficSignDataset(Dataset):
     def __getitem__(self, idx):
         img_name = os.path.join(self.root_dir, self.dataframe.iloc[idx, 0])
         image = Image.open(img_name).convert('RGB')
-        label = self.dataframe.iloc[idx, 1]
+        label = int(self.dataframe.iloc[idx, 1])
+        
+        # Assert label is within expected range
+        assert 0 <= label < 43, f"Label {label} at index {idx} is out of range."
 
         if self.transform:
             image = self.transform(image)
-
+        
         return image, label
 
 # Define transformations (normalization and any other augmentation)

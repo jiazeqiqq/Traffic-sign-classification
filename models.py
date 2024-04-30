@@ -1,7 +1,11 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 import numpy as np
+import torch
+import torch.nn as nn
+import torch.optim as optim
 
 # load x_train/x_test, y_train/y_test
 X_train = np.load('./dataset/X_train.npy')
@@ -22,3 +26,10 @@ adaboost.fit(X_train, y_train)
 y_pred = adaboost.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print("Adaboost Accuracy:", accuracy)
+
+# Naive Bayes(prior follows gaussian distribution)
+nb = GaussianNB()
+nb.fit(X_train, y_train)
+y_pred = nb.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print("Naive Bayes Accuracy:", accuracy)
